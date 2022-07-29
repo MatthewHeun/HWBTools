@@ -2,7 +2,7 @@
 #Date: On-going
 #File name: Functions.R
 
-#Function: Loading existing dataframes into R
+
 #' Title
 #'
 #' @param path_name 
@@ -19,7 +19,15 @@ Load_DataFrame <- function(path_name, file_name) {
 }
 
 
-#Function: Package installation
+
+#' Title
+#'
+#' @param pkg_name 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 Install_pkg <- function(pkg_name) {
   if(pkg_name %in% rownames(installed.packages()) == FALSE) {
     print("Package installing...")
@@ -31,7 +39,13 @@ Install_pkg <- function(pkg_name) {
 }
 
 
-#Function: calling installed packages
+
+#' Title
+#'
+#' @return
+#' @export
+#'
+#' @examples
 call_pkg <- function() {
   library(labelled)
   library(haven)

@@ -9,9 +9,9 @@
 # source("C:/Users/gvl2.CALVINAD/OneDrive - Calvin University/SUMMER RESEARCH/Summer 2022/Analysis/Programming/VHLSS data analysis/List.R")
 
 # Source file personal computer
-source("C:/Users/giami/OneDrive - Calvin University/SUMMER RESEARCH/Summer 2022/Analysis/Programming/VHLSS data analysis/Functions.R")
-source("C:/Users/giami/OneDrive - Calvin University/SUMMER RESEARCH/Summer 2022/Analysis/Programming/VHLSS data analysis/Column_label.R")
-source("C:/Users/giami/OneDrive - Calvin University/SUMMER RESEARCH/Summer 2022/Analysis/Programming/VHLSS data analysis/List.R")
+source("C:/Users/giami/OneDrive - Calvin University/SUMMER RESEARCH/Summer 2022/Analysis/Programming/HWBTools/VHLSS data analysis/Functions.R")
+source("C:/Users/giami/OneDrive - Calvin University/SUMMER RESEARCH/Summer 2022/Analysis/Programming/HWBTools/VHLSS data analysis/Column_label.R")
+source("C:/Users/giami/OneDrive - Calvin University/SUMMER RESEARCH/Summer 2022/Analysis/Programming/HWBTools/VHLSS data analysis/List.R")
 
 #Target package installation
 install.packages("targets")
