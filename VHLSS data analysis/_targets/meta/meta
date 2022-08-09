@@ -164,9 +164,14 @@ fuel_results_colnames|object|213759cadc3eb3fa|||||||||||||||
 full_fuel1|object|970b92c04beb0d94|||||||||||||||
 full_fuel2|object|322a517026f36934|||||||||||||||
 GDP_data|stem|95072b705cdaa3a0|c4143ec91c5501fd|8a9e67f1ad57a0fe|-1110281030||t19200.7317591176s|9c4bb1876e1721ca|190|rds|local|vector|||1.79|package labelled was built under R version 4.2.1. package haven was built under R version 4.2.1. package tidyverse was built under R version 4.2.1. package ggplot2 was built under R version 4.2.1. package tibble was built under R version 4.2.1. package tidyr was built under R version 4.2.1. package readr was built under R version 4.2.1. package purrr was built under R version 4.2.1. package dplyr was built under R version 4.2.1. package stringr was built under R version 4.2.1. package forcats was built under R version 4.2.1. package visNetwork was built under R version 4.2.1. package usethis was built under R version 4.2.1. package sjlabelled was built under R version 4.2.1. package formattable was built under R version 4.2.1. package patchwork was built under R version 4.2.1|
-GDP_growth_graph|function|804e773327685895|||||||||||||||
-GDP_WB|stem|550d3ae21517eeb3|39eb094d44555d6b|7c154e22671d78ff|-2030629510||t19200.7421879044s|b8722b1cea90478b|442|rds|local|vector|||0.01||
-GDP_WB_growth_graph|stem|0dc2f91843b60a3a|e6932a198dca2561|e0684c3fa4e0d139|460185888||t19200.8263146308s|6585077ad863f600|79218|rds|local|vector|||0.09||
+GDP_growth_graph|function|47cb1487b41b275d|||||||||||||||
+GDP_index_graph|function|ae771ab5ec8c0f4c|||||||||||||||
+GDP_plot|function|1204d456d4626356|||||||||||||||
+GDP_rate_of_change|function|e8209c438cdee7c4|||||||||||||||
+GDP_WB|stem|d6569b9d9cbfa99d|c7afb3fed6ef5d4c|7c154e22671d78ff|-2030629510||t19213.1826567872s|44634ed83313222b|470|rds|local|vector|||0.01||
+GDP_WB_growth_graph|stem|176c758d00d37b2c|e6932a198dca2561|e1052ca775dbba4c|460185888||t19213.0963420252s|05e95cb8a6a4414b|78035|rds|local|vector|||0.03||
+GDP_WB_index_graph|stem|d50f9313569c5d00|b4b9bfd64dd9b4fe|5522c1ac0bdd0e7e|-369097584||t19213.2231843343s|bec55ee6ec393043|78095|rds|local|vector|||0.05||
+GDP_WB_rate_of_change|stem|1e4528abf3ec0c9a|d7ab0905d8076562|dc023f4a4ddbaa40|2067566339||t19213.2231855117s|6b10f5a0549d8d93|79251|rds|local|vector|||0.03||
 get_dta_files|function|abf378fb01f7e326|||||||||||||||
 get_GDP_data|function|10c35a74baae94eb|||||||||||||||
 get_pop_data|function|fa215a55aee73c88|||||||||||||||
@@ -285,11 +290,15 @@ other_fuel1|object|ceb877f4ee0094a5|||||||||||||||
 other_fuel2|object|0c097c460d2b4b92|||||||||||||||
 Percent_all_WB|function|dd1a777609a805ac|||||||||||||||
 Percent_all_WB_year|function|c01c6b9f3140229e|||||||||||||||
-Percent_sample_dropped|function|c19be1d985f7bd03|||||||||||||||
-Percent_Sample_dropped|stem|af678e578fc95213|e1b8943b64d6f6b5|9176b97fdade829e|1872597888||t19199.8721523474s|2e8a988094b0d175|430|rds|local|vector|||0.01||
+Percent_sample_dropped|function|add450a30853d13e|||||||||||||||
+Percent_Sample_dropped|stem|0924e95606efb144|e1b8943b64d6f6b5|b1586311a60f76a3|1872597888||t19205.795455716s|81a4874a414576b3|433|rds|local|vector|||0.02||
+Percent_WB_one_graph|function|8d13bed2eef53d81|||||||||||||||
+Percent_WB_One_graph|stem|27741a2c87767856|21d7adf3c266a739|0836ff7c6d924b89|-1858515982||t19213.2231826841s|16de9f1e4492533e|97391|rds|local|vector|||0.1||
 Pop_data|stem|5a8626b22b55c25f|cbf44502c3e96c5f|432757581cb3ba51|1072930178||t19196.1486204655s|4f479f57c0215211|401|rds|local|vector|||1.91|package labelled was built under R version 4.2.1. package haven was built under R version 4.2.1. package tidyverse was built under R version 4.2.1. package ggplot2 was built under R version 4.2.1. package tibble was built under R version 4.2.1. package tidyr was built under R version 4.2.1. package readr was built under R version 4.2.1. package purrr was built under R version 4.2.1. package dplyr was built under R version 4.2.1. package stringr was built under R version 4.2.1. package forcats was built under R version 4.2.1. package visNetwork was built under R version 4.2.1. package usethis was built under R version 4.2.1. package sjlabelled was built under R version 4.2.1. package formattable was built under R version 4.2.1|
 pop_path|object|8bfc0125cabc1a35|||||||||||||||
 Population_graph|stem|19c9a1614e643a42|65c208279aa5d3f0|8605a40f7fc1230c|-1215937738||t19200.6527080274s|cf6da8e7c2c71fdb|86570|rds|local|vector|||0.25||
+Population_one_graph|function|5d2bc89c0d4b8ef5|||||||||||||||
+Population_WB_One_graph|stem|1b2b0bc9b35f1105|67029eb66da075c0|71f8689918d67693|174227413||t19213.2337784965s|8c3a22c4f0a0ee3d|103709|rds|local|vector|||0.1||
 Results_WB|function|0590c249207cad88|||||||||||||||
 Rural_all_Summary|stem|b6e72d3e6f6fd3b6|34df408dad87ac3c|00b7f75bfdb37ba4|-231451562||t19198.8572513482s|88d3a5d6fadcfa47|483|rds|local|vector|||0.02||
 Rural_all_WB_2010|stem|f1357fe06136b702|47044de339884fa1|d30c5270d03fe45a|1952063196||t19198.8533101417s|36500b95d6893aee|74|rds|local|vector|||0.27||
@@ -383,7 +392,7 @@ Sample_2018|stem|92a8882490a5e33d|71f0344aa40156f5|344f754bfa67fecf|-608166063||
 Sample_data|function|6801f46ea08b244f|||||||||||||||
 Sample_ext|function|32362c22a4cb7d94|||||||||||||||
 sample_graph|function|a289e65c49b08e20|||||||||||||||
-Sample_graph|stem|d38ebd8113e18252|4bea9f250fc6188a|b18f752f1577633f|-329168607||t19200.6086901534s|e709c3cc6a54a177|68561|rds|local|vector|||0.09||
+Sample_graph|stem|74684962db39ea29|4bea9f250fc6188a|606d08e50fed1491|-329168607||t19205.7954596638s|2477daa23362eace|68564|rds|local|vector|||0.06||
 Sample_var_2010_list|stem|09e74e91530c6587|57837d6b38d32333|26ad275068349b52|-1458218592||t19195.1414999617s|4ff05336d644dae2|106|rds|local|vector|||0||
 Sample_var_2012_list|stem|09e74e91530c6587|ca79f21bc761817f|ea2959d39e2d39fd|-1443013443||t19195.1415003773s|4ff05336d644dae2|106|rds|local|vector|||0||
 Sample_var_2014_list|stem|640d9f9f7b062b57|299d297aae8029d7|d6365c90843297ed|720885445||t19195.1415009659s|4ff05336d644dae2|106|rds|local|vector|||0||

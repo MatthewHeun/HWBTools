@@ -1,33 +1,26 @@
-#Name: Gia Mien Le
-#Date: On-going
-#File name: Functions.R
+#---------------------------------------------------------------------------Introduction------------------------------------------------------------------------------
 
+# # Name: Gia Mien Le
+# # Professor Matthew Heun
+# # Starting date: June 23, 2022
+# # File name: Function.R
+# 
+# # Description: This file contains all the functions that analyzes VHLSS data from General Statistics Office of Vietnam (GSO). They are divided into
+# #              Starting, Filtering data, Analyzing Well-being data, Urban/Rural/Total, Results and graphing.
 
-#' Title
+#-----------------------------------------------------------------------------Starting--------------------------------------------------------------------------------
+
+#' Installing relevant packages
+#' @aliases Install_pkg
+#' @param pkg_name, name of package to be installed 
 #'
-#' @param path_name 
-#' @param file_name 
-#'
-#' @return
+#' @description 
+#' This function takes in a string called in variable name pkg_name
+#' 
 #' @export
 #'
 #' @examples
-Load_DataFrame <- function(path_name, file_name) {
-  setwd(path_name)
-  getwd()
-  load(file_name)
-}
-
-
-
-#' Title
-#'
-#' @param pkg_name 
-#'
-#' @return
-#' @export
-#'
-#' @examples
+NULL
 Install_pkg <- function(pkg_name) {
   if(pkg_name %in% rownames(installed.packages()) == FALSE) {
     print("Package installing...")
@@ -36,39 +29,6 @@ Install_pkg <- function(pkg_name) {
   else {
     print("Package already installed")
   }
-}
-
-
-
-#' Title
-#'
-#' @return
-#' @export
-#'
-#' @examples
-call_pkg <- function() {
-  library(labelled)
-  library(haven)
-  library(dplyr)
-  library(tibble)
-  library(visNetwork)
-  library(usethis)
-  library(targets)
-  library(tidyr)
-  library(sjlabelled)
-  library(arsenal)
-  library(janitor)
-  library(diffdf)
-  library(sjmisc)
-  library(tidyverse)
-  library(formattable)
-  library(data.table)
-  library(RColorBrewer)
-  library(grid)
-  library(tinytex)
-  library(patchwork)
-  library(pwt10)
-  library(reshape)
 }
 
 
@@ -96,7 +56,7 @@ get_GDP_data <- function(Year) {
   
   return(GDP_df)
 }
-#--------------------------------------------Cleaning up data section------------------------------------------------------------------------------
+#------------------------------------------------------------------------Filtering data------------------------------------------------------------------------------
 
 #foreign::read.dta() does not work for Stata version 5-12 --> use haven::read_dta() instead.
 import_dta_files <- function(file_list, file_path) {
@@ -447,7 +407,7 @@ join_area_sample <- function(area_data, sample_data) {
   
   return(new_df2)
 }
-#---------------------------------------------Cleaning up data section II-------------------------------------------------------------------
+#-------------------------------------------------------------------Analyzing Well-being data------------------------------------------------------------------------
 
 # Function that sorts out education indicator based on well-being criteria.
 Total_WB_edu_data <- function(Edu_hh_data, Pop_data, Mar_stat_list) {
@@ -625,7 +585,7 @@ Total_WB_fuel_data <- function(Fuel_data, Pop_data, fuel_list, modern_fuel, othe
 
 }
 
-#-------------------------------------------------------------Urban/Rural/Population-------------------------------------------------------
+#----------------------------------------------------------------------Urban/Rural/Total---------------------------------------------------------------------
 # Function to filter urban or rural areas
 urban_rural_filter <- function(data_list, string) {
   if (string == "urban") {
@@ -654,7 +614,7 @@ add_member_code <- function(member_data, data_list) {
   
   return(data_list)
 }
-#---------------------------------------------------Results---------------------------------------------------------
+#----------------------------------------------------------------------------Results--------------------------------------------------------------------------
 
 # Function that picks out the necessary data sets
 data_set_choice <- function(dataframe, colnames, year) {
@@ -799,14 +759,14 @@ Add_all_WB_total <- function (pop_df, Rural_df, Urban_df) {
 Percent_sample_dropped <- function(init_sample, final_sample) {
   new_df<- inner_join(init_sample, final_sample, by = c("Year"))
   
-  new_df$Ideal.Complete.Sample <- c(9399, 9402, 9399, 9399, 9399)
+  new_df$Reported.Complete <- c(9399, 9402, 9399, 9399, 9399)
   
   new_df$Percent.dropped <- percent((new_df$Total.households - new_df$Final.Sample)/new_df$Total.households)
   
   return(new_df)
 }
 
-#-------------------------------------------------Graphing functions-------------------------------------------------------------------
+#---------------------------------------------------------------------------Graphing----------------------------------------------------------------------------
 facet_graph <- function(total_df, text, coeff, WB_vector, WB_vector_year) {
   
   total_df$Year <- as.character(total_df$Year)
@@ -869,6 +829,102 @@ graph_4_WB <- function(total_df) {
           legend.title = element_blank(),
           legend.position = "bottom")
 }
+
+
+Percent_WB_one_graph <- function(Urban_all_Summary, Urban_Member_Summary,
+                                 Rural_all_Summary, Rural_Member_Summary,
+                                 Total_all_Summary, Total_Member_Summary) {
+  
+  urban_df <- cbind(select(Urban_all_Summary, c("Year", "Percent.WB")), select(Urban_Member_Summary, starts_with('Number.Percent.')))
+  colnames(urban_df) <- c("Year", "Percent.WB", "Percent.WB.Education", "Percent.WB.Water", "Percent.WB.Food", "Percent.WB.Fuel")
+  urban_df <- add_column(urban_df, Area.type = "Urban", .after = "Year")
+  
+  rural_df <- cbind(select(Rural_all_Summary, c("Year", "Percent.WB")), select(Rural_Member_Summary, starts_with('Number.Percent.')))
+  colnames(rural_df) <- c("Year", "Percent.WB", "Percent.WB.Education", "Percent.WB.Water", "Percent.WB.Food", "Percent.WB.Fuel")
+  rural_df <- add_column(rural_df, Area.type = "Rural", .after = "Year")
+  
+  total_df <- cbind(select(Total_all_Summary, c("Year", "Percent.WB")), select(Total_Member_Summary, starts_with('Percent.')))
+  total_df <- add_column(total_df, Area.type = "Total", .after = "Year")
+  
+  
+  final_df <- rbind(rbind(rural_df, urban_df), total_df)
+  
+  final_df <- gather(final_df, key = "WB.Indicator", value = "Percent", c("Percent.WB", "Percent.WB.Education", "Percent.WB.Water",
+                                                                          "Percent.WB.Food", "Percent.WB.Fuel"))
+  
+  final_df$Area.type <- factor(final_df$Area.type, level = c("Rural", "Urban", "Total"))
+  final_df$WB.Indicator <- factor(final_df$WB.Indicator, level = c("Percent.WB", "Percent.WB.Education",
+                                                                   "Percent.WB.Water", "Percent.WB.Food", "Percent.WB.Fuel"))
+  
+  ggplot(final_df, aes(x = Year, y = Percent)) +
+    geom_line(aes(color = WB.Indicator, linetype = WB.Indicator), size = 0.75) +
+    facet_wrap(~Area.type) +
+    theme_bw() +
+    theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+          axis.ticks.length = unit(-0.15, "cm"),
+          strip.text = element_text(face = "bold"),
+          legend.title = element_blank(),
+          plot.title = element_text(hjust = 0.5)) +
+    scale_y_continuous(name = "% Population achieved well-being",
+                       labels = scales::label_percent(),
+                       limits = c(0, 1),
+                       expand = c(0, 0),
+                       breaks = seq(0, 1, 0.2)) +
+    scale_linetype_manual(labels = c('All Well-being indicators', 'Education', 'Water', 'Food', 'Fuel'),
+                          values = c("solid", "dashed", "dashed", "dashed", "dashed")) +
+    scale_color_manual(labels = c('All Well-being indicators', 'Education', 'Water', 'Food', 'Fuel'),
+                       values = c("red", "orange", "blue", "maroon", "green")) +
+    ggtitle("Percent population achieved well-being in rural, urban, and all of Vietnam")
+}
+
+
+
+Population_one_graph <- function(Urban_all_Summary, Urban_Member_Summary,
+                                 Rural_all_Summary, Rural_Member_Summary,
+                                 Total_all_Summary, Total_Member_Summary) {
+  
+  urban_df <- cbind(select(Urban_all_Summary, c("Year", "Urban.Population", "Population.scale")), select(Urban_Member_Summary, starts_with('Scale.')))
+  urban_df <- add_column(urban_df, Area.type = "Urban", .after = "Year")
+  colnames(urban_df)[which(names(urban_df) == "Urban.Population")] <- "Population"
+  
+  rural_df <- cbind(select(Rural_all_Summary, c("Year", "Rural.Population", "Population.scale")), select(Rural_Member_Summary, starts_with('Scale.')))
+  rural_df <- add_column(rural_df, Area.type = "Rural", .after = "Year")
+  colnames(rural_df)[which(names(rural_df) == "Rural.Population")] <- "Population"
+  
+  total_df <- cbind(select(Total_all_Summary, c("Year", "Population", "Population.scale")), select(Total_Member_Summary, starts_with('Scale.')))
+  total_df <- add_column(total_df, Area.type = "Total", .after = "Year")
+  
+  
+  final_df <- rbind(rbind(rural_df, urban_df), total_df)
+  
+  final_df <- gather(final_df, key = "WB.Indicator", value = "Number", c("Population.scale", "Population", "Scale.Education", "Scale.Water",
+                                                                          "Scale.Food", "Scale.Fuel"))
+  
+  final_df$Area.type <- factor(final_df$Area.type, level = c("Rural", "Urban", "Total"))
+  final_df$WB.Indicator <- factor(final_df$WB.Indicator, level = c("Population.scale", "Scale.Education",
+                                                                   "Scale.Water", "Scale.Food", "Scale.Fuel", "Population"))
+  
+  ggplot(final_df, aes(x = Year,y = Number/1000000, fill = WB.Indicator)) +
+    geom_col(position = "dodge", width = 1.5, color = "black") +
+    facet_wrap(~Area.type) +
+    theme_bw() +
+    theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+          axis.ticks.length = unit(-0.15, "cm"),
+          strip.text = element_text(face = "bold"),
+          legend.title = element_blank(),
+          plot.title = element_text(hjust = 0.5)) +
+    scale_y_continuous(name = "Number of people achieved well-being (million people)",
+                       limits = c(0, 100),
+                       expand = c(0, 0),
+                       breaks = seq(0, 100, 20)) +
+    scale_x_continuous(name = "Year",
+                       breaks = seq(2010, 2018, 2)) +
+    scale_fill_brewer(labels = c('All Well-being indicators', 'Education', 'Water', 'Food', 'Fuel', 'Total Population'),
+                       palette = "Blues") +
+    ggtitle("Number of people achieved well-being in rural, urban, and all of Vietnam")
+  
+}
+
 
 Sum_graph_4_WB <- function(total_df, urban_df, rural_df){
   total_df$Year <- as.character(total_df$Year)
@@ -959,7 +1015,26 @@ total_population_graph <- function(Pop_data) {
 }
 
 
-GDP_growth_graph <- function(GDP_WB) {
+GDP_plot <- function(sum_df) {
+  alter_df <- melt(sum_df, id.vars = 'year')
+  alter_df$variable <- factor(alter_df$variable, level = c("cgdpe", "Population.scale", "Scale.Education",
+                                                           "Scale.Water", "Scale.Food", "Scale.Fuel", "Population"))
+  
+  ggplot(alter_df, aes(x = year, y = value)) +
+    geom_line(aes(color = variable, linetype = variable), size = 0.75) +
+    scale_linetype_manual(labels = c("GDP", 'All Well-being indicators', 'Education', 'Water', 'Food', 'Fuel', 'Population'),
+                          values = c("solid", "solid", "dashed", "dashed", "dashed", "dashed", "dotted")) +
+    scale_color_manual(labels = c("GDP", 'All Well-being indicators', 'Education', 'Water', 'Food', 'Fuel', 'Population'),
+                       values = c("black", "red", "orange", "blue", "maroon", "green", "black")) +
+    theme_bw() +
+    theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+          axis.ticks.length = unit(-0.15, "cm"),
+          legend.title = element_blank(),
+          plot.title = element_text(hjust = 0.5)) +
+    xlab("Year")
+}
+
+GDP_index_graph <- function(GDP_WB) {
   sum_df <- GDP_WB
   for (y in 2:length(GDP_WB)) {
     for (x in 1:nrow(GDP_WB)) {
@@ -967,25 +1042,35 @@ GDP_growth_graph <- function(GDP_WB) {
     }
   }
   
-  alter_df <- melt(sum_df, id.vars = 'year')
-  alter_df$variable <- factor(alter_df$variable, level = c("cgdpe", "Population.scale", "Scale.Education",
-                                                           "Scale.Water", "Scale.Food", "Scale.Fuel"))
-  
-  ggplot(alter_df, aes(x = year, y = value)) +
-    geom_line(aes(color = variable, linetype = variable), size = 0.75) +
-    scale_y_continuous(name = "Growth rate",
+  GDP_plot(sum_df) +
+    scale_y_continuous(name = "Index ratio",
                        breaks = seq(0, 2.2, 0.2),
                        limits = c(0, 2.2),
                        expand = c(0,0)) +
-    scale_linetype_manual(labels = c("GDP", 'All Well-being indicators', 'Education', 'Water', 'Food', 'Fuel'),
-                          values = c("solid", "solid", "dashed", "dashed", "dashed", "dashed")) +
-    scale_color_manual(labels = c("GDP", 'All Well-being indicators', 'Education', 'Water', 'Food', 'Fuel'),
-                       values = c("black", "red", "blue", "orange", "green", "maroon")) +
-    theme_bw() +
-    theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
-          axis.ticks.length = unit(-0.15, "cm"),
-          legend.title = element_blank(),
-          plot.title = element_text(hjust = 0.5)) +
-    ggtitle("GDP growth rate vs. Human well-being growth rate in Vietnam")+
-    xlab("Year")
+    ggtitle("GDP index vs. Human well-being index in Vietnam")
+  
+}
+
+
+GDP_rate_of_change <- function(GDP_WB) {
+  sum_df <- GDP_WB
+  
+  for (y in 2:length(GDP_WB)) {
+    for (x in 1:nrow(GDP_WB)) {
+      if (x == 1) {
+        sum_df[x, y] <- 0
+      }else{
+        sum_df[x, y] <- round(((GDP_WB[x, y]/GDP_WB[x-1, y])^(1/(GDP_WB[x, 1] - GDP_WB[x-1, 1]))) - 1, 3)
+      }
+    }
+  }
+  
+  GDP_plot(sum_df) +
+    scale_y_continuous(name = "Growth rate",
+                       breaks = seq(0, 0.2, 0.02),
+                       limits = c(0, 0.2),
+                       expand = c(0,0),
+                       labels = scales::label_percent()) +
+    ggtitle("GDP growth rate vs. Human well-being growth rate in Vietnam")
+  
 }

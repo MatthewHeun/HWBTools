@@ -244,4 +244,55 @@ hh_path = "C:/Users/giami/OneDrive - Calvin University/SUMMER RESEARCH/Summer 20
 
 
 
+# urban_df <- cbind(select(Urban_all_Summary, c("Year", "Percent.WB")), select(Urban_Member_Summary, starts_with('Number.Percent.')))
+# colnames(urban_df) <- c("Year", "Percent.WB", "Percent.WB.Education", "Percent.WB.Water", "Percent.WB.Food", "Percent.WB.Fuel")
+# urban_df <- add_column(urban_df, Area.type = "Urban", .after = "Year")
+# 
+# rural_df <- cbind(select(Rural_all_Summary, c("Year", "Percent.WB")), select(Rural_Member_Summary, starts_with('Number.Percent.')))
+# colnames(rural_df) <- c("Year", "Percent.WB", "Percent.WB.Education", "Percent.WB.Water", "Percent.WB.Food", "Percent.WB.Fuel")
+# rural_df <- add_column(rural_df, Area.type = "Rural", .after = "Year")
+# 
+# total_df <- cbind(select(Total_all_Summary, c("Year", "Percent.WB")), select(Total_Member_Summary, starts_with('Percent.')))
+# total_df <- add_column(total_df, Area.type = "Total", .after = "Year")
+# 
+# 
+# final_df <- rbind(rbind(rural_df, urban_df), total_df)
+# 
+# final_df <- gather(final_df, key = "WB.Indicator", value = "Percent", c("Percent.WB", "Percent.WB.Education", "Percent.WB.Water",
+#                                                                         "Percent.WB.Food", "Percent.WB.Fuel"))
+# 
+# final_df$Area.type <- factor(final_df$Area.type, level = c("Rural", "Urban", "Total"))
+# 
+# ggplot(final_df, aes(x = Year, y = Percent)) +
+#   geom_line(aes(color = WB.Indicator, linetype = WB.Indicator), size = 0.75) +
+#   facet_wrap(~Area.type) +
+#   theme_bw() +
+#   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+#         axis.ticks.length = unit(-0.15, "cm"),
+#         strip.text = element_text(face = "bold"),
+#         legend.title = element_blank(),
+#         plot.title = element_text(hjust = 0.5)) +
+#   scale_y_continuous(name = "% Population achieved well-being",
+#                      labels = scales::label_percent(),
+#                      limits = c(0, 1),
+#                      expand = c(0, 0),
+#                      breaks = seq(0, 1, 0.2)) +
+#   scale_linetype_manual(labels = c('All Well-being indicators', 'Education', 'Food', 'Fuel', 'Water'),
+#                         values = c("solid", "dashed", "dashed", "dashed", "dashed")) +
+#   scale_color_manual(labels = c('All Well-being indicators', 'Education', 'Food', 'Fuel', 'Water'),
+#                       values = c("red", "blue", "orange", "green", "maroon")) +
+#   ggtitle("Percent population achieved well-being in rural, urban, and all of Vietnam")
+  
+
+# sum_df <- GDP_WB
+# 
+# for (y in 2:length(GDP_WB)) {
+#   for (x in 1:nrow(GDP_WB)) {
+#     if (x == 1) {
+#       sum_df[x, y] <- 0
+#     }else{
+#       sum_df[x, y] <- round(((GDP_WB[x, y]/GDP_WB[x-1, y])^(1/(GDP_WB[x, 1] - GDP_WB[x-1, 1]))) - 1, 3)
+#     }
+#   }
+# }
 

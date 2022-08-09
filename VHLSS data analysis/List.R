@@ -1,9 +1,55 @@
-#--------------------------------------------Extra variable--------------------------------------------------------
+#---------------------------------------------------------------------------Introduction------------------------------------------------------------------------------
+
+# # Name: Gia Mien Le
+# # Professor Matthew Heun
+# # Starting date: June 23, 2022 (Actually, I don't remember)
+# # File name: List.R
+# 
+# # Description: This file includes all the list and vector of variables needed to organize and filter the datasets. The variable within
+# #              each list are either column names, names needed to pick out the human well-being indicators in Vietnam, or section names
+# #              according to the VHLSS (Vietnam Household Living Standards Survey) questionnaires. 
+
+# #              I should have a documentation on the questionnaires I used for the naming schemes, however, due to sourcing issues, I haven't
+# #              been able to finish it. This file is better understood along with the questionnaires.
+
+# #              I have to be honest, I am not good at naming variables, so please bear with me as we go along.
+
+
+#-------------------------------------------------------------------Extra variable--------------------------------------------------------
+
+# Description: These are vectors with variables that is applicable to the dataset as a whole, but are only used in certain functions.
+
+#              "Year" is a vector of all the years involved in the human well-being analysis.
+
+#              "area_colnames1" and "area_colnames2" are basically vectors of column names to be added to certain data frames to specify
+#              Vietnam's urban/rural area.
+
+#              "tinh", "huyen", "xa", "diaban", "hoso" can be roughly translated as province, district, commune, territory, house code.
+#              "ttnt" or thanh thi - nong thon means urban-rural.
+
+
 Year = c(2010, 2012, 2014, 2016, 2018)
 area_colnames1 = c("ttnt")
 area_colnames2 = c("tinh", "huyen", "xa", "diaban", "hoso", "ttnt")
 
-#---------------------------------------------------------------Vector of fuel names------------------------------------------------------
+#---------------------------------------------------------------Vectors of fuel names------------------------------------------------------
+
+# Description: These are vectors related to fuel indicator in the human well-being indicator. Since 2010 - 2014's data format is different
+#              from that of 2016 - 2018, there are numbers 1 and 2 to indicate which vectors would be applicable to which format. 1 corresponds to 
+#              2010 - 2014, and 2 corresponds to 2016 - 2018.
+
+#              "fuel_name1" and "fuel_name2" are vectors containing types of fuel used in a household as listed in the questionnaire.
+
+#              "code1" and "code2" are vectors containing codes corresponding to the types of fuel used in a household list in the questionnaire.
+
+#              "full_fuel1" and "full_fuel2" are vectors with all types of fuel in the questionnaire, with the addition of electricity. Electricity
+#              does not belong in the fuel section so it had to be pulled out from a different section.
+
+#              "modern_fuel" is a vector containing modern fuels.
+
+#              "other_fuel1" and "other_fuel2" are vectors that have fuels not considered modern, more like transitional and traditional fuels.
+
+
 fuel_name1 = c("Coal", "Coal briquette", "Petroleum", "Kerosene", "Maznut oil", "Diesel oil",
                "LPG", "Natural gas", "Firewood, husk, sawdust", "Farm by-products", "Other")
 
@@ -28,10 +74,27 @@ other_fuel2 <- c("Coal", "Coal briquette", "Firewood, husk, sawdust", "Farm by-p
 
 
 #---------------------------------------------------------------Vector of marital status---------------------------------------------------
+
+# Description: This vector includes marital status for the education indicator, where household demographics are relevant
+
 Mar_stat = c("Single", "Married", "Widowed", "Divorced", "Separated")
 
 
-#------------------------------------------------------------Vector of safe and unsafe water---------------------------------------------------
+#------------------------------------------------------------Vectors of safe and unsafe water-----------------------------------------------
+
+# Description: These are vectors with types of water access for the safe/unsafe water human well-being indicator. Similar to the "Vectors of
+#              fuel names" section, format for 2010 - 2014 is different from format for 2016 - 2018 datasets. Therefore, numbers 1 and 2 
+#              represent 2010 - 2014 data and 2016 - 2018 data, respectively. 
+
+#              "safe_water1" and "safe_water2" are types of water access that fulfills SDG 6 (Sustainability Development Goal 6), water
+#              and sanitation, according to the questionnaires.
+
+#              "safe_water_code1" and "safe_water_code2" are vectors containing codes of safe water access according to the questionnaires.
+
+#              Likewise, "unsafe_water1" and "unsafe_water2" are vectors of unsafe water access types.
+#              "unsafe_water_code1" and "unsafe_water_code2" are vectors of codes of unsafe water access according to the questionnaires.
+
+
 safe_water1 = c("Private tap water", "Public tap water", "Drilled well", "Protected dug well",
                "Protected stream water", "Bought water", "Rain water")
 unsafe_water1 = c("Unprotected dug well", "Unprotected stream water", "Others")
@@ -48,7 +111,14 @@ unsafe_water2 = c("Unprotected dug well", "Unprotected stream water", "Bought wa
 safe_water_code2 = c(1,2,3,4,5,6,8,10,11,14)
 unsafe_water_code2 = c(7,9,12,13,15)
 
-#----------------------------------------------------List of files containing related well-being data--------------------------------------------
+#----------------------------------------------------List of files containing related well-being data---------------------------------------
+
+# Description: These are lists of of data frames names related to well-being indicators, as well as additional data frames related to 
+#              total household expenditures, educational expenditures, and areas with urban/rural split.
+#              The overall purpose of these lists are to extract relevant data from a bundle of dataframes as well as using them to calculate
+#              the number of household/people involved in the survey. Details are discussed in the Function.R file.
+#              Lists are organized according to data year.
+
 
 # List of relevant 2010 folders for population data
 exp_2010_list = list("muc5a1.dta", "muc5a2.dta", "muc5b1.dta", "muc5b2.dta", 
@@ -132,7 +202,10 @@ Folder_2018 = list(
   electricity_2018_list = list("muc7.dta")
 )
 
-#----------------------------------------------------List of columns containing well-being data---------------------------------------------------------
+#----------------------------------------------------Lists and vectors of columns containing well-being data---------------------------------------------------------
+
+# Description: These are vectors and lists of column names of columns that has relevant well-being data, sorted by year.
+
 #List of columns containing related 2010 well-being data
 hh_2010_colnames = c("matv", "m1ac3", "m1ac6")
 edu_2010_colnames = c("matv", "m2ac1")
@@ -177,7 +250,10 @@ food_2018_colnames2 = c("m8c1a")
 fuel_2018_colnames = c("m5b1ma", "m5b1c3", "m5b1c4", "m5b1c5")
 electricity_2018_colnames = c("m7c23")
 
-#---------------------------------------------------------------------Vector of final results column names----------------------------------------------------------------------
+#---------------------------------------------------------------------Vectors of final results column names----------------------------------------------------------------------
+
+# Description: These are vectors of column names for the final results output from analyzing the data. 
+
 edu_results_colnames <- c("Year", "Total population","Samples.Education", "Grade completed >= 9", "Grade completed < 9", "Sample.Percent.Education", "Scale.Education")
 water_results_colnames <- c("Year", "Total population","Samples.Water", "Safe Water", "Unsafe Water", "Sample.Percent.Water", "Scale.Water")
 food_results_colnames <- c("Year","Total Population", "Samples.Food", "Adequate Food", "Inadequate Food", "Sample.Percent.Food", "Scale.Food")
@@ -188,7 +264,10 @@ member_water_results_colnames <- c("Year", "Total population","Numbers.Water", "
 member_food_results_colnames <- c("Year","Total Population", "Numbers.Food", "Adequate Food", "Inadequate Food", "Number.Percent.Food", "Scale.Food")
 member_fuel_results_colnames <- c("Year","Total population", "Numbers.Fuel", "Modern fuel met", "Modern fuel not met", "Number.Percent.Fuel", "Scale.Fuel")
 
-#-------------------------------------------------------Vector to get values for the graph-------------------------------------------------------------------------------------
+#-------------------------------------------------------Vectors to get values for the graph-------------------------------------------------------------------------------------
+
+# Description: As the title suggests, these are vectors of column names for columns whose data needed to be extracted for visual analyzing (graphs!).
+
 area_WB_vector <- c("Number.Percent.Education", "Number.Percent.Water", "Number.Percent.Food", "Number.Percent.Fuel")
 area_WB_year_vector <- c("Year", "Number.Percent.Education", "Number.Percent.Water", "Number.Percent.Food", "Number.Percent.Fuel") 
 

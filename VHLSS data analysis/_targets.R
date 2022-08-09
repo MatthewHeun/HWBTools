@@ -512,7 +512,7 @@ tar_target(Total_all_Summary, Add_all_WB_total(Total_population_df, Rural_all_Su
 
 tar_target(Percent_Sample_dropped, Percent_sample_dropped(Nrows_total_households, Nrows_Area_Sample)),
 
-tar_target(GDP_WB, cbind(cbind(select(GDP_data, c("year","cgdpe")), select(Total_Member_Summary, c("Scale.Education", "Scale.Water", "Scale.Food", "Scale.Fuel"))), 
+tar_target(GDP_WB, cbind(cbind(select(GDP_data, c("year","cgdpe")), select(Total_Member_Summary, c("Population","Scale.Education", "Scale.Water", "Scale.Food", "Scale.Fuel"))), 
                          select(Total_all_Summary, c("Population.scale")))),
 
 #--------------------------------------------------------------------GRAPHS----------------------------------------------------------------
@@ -522,12 +522,19 @@ tar_target(Rural_WB_facet_graph, facet_graph(Rural_Member_Summary, "Rural", 100,
 tar_target(All_WB_facet_graph, Rural_WB_facet_graph + Urban_WB_facet_graph + Total_WB_facet_graph + plot_layout(ncol = 3)),
 
 tar_target(Total_WB_graph, graph_4_WB(Total_all_Summary)),
+tar_target(Percent_WB_One_graph, Percent_WB_one_graph(Urban_all_Summary, Urban_Member_Summary,
+                                                      Rural_all_Summary, Rural_Member_Summary,
+                                                      Total_all_Summary, Total_Member_Summary)),
+tar_target(Population_WB_One_graph, Population_one_graph(Urban_all_Summary, Urban_Member_Summary,
+                                                         Rural_all_Summary, Rural_Member_Summary,
+                                                         Total_all_Summary, Total_Member_Summary)),
+
 tar_target(All_WB_graph, Sum_graph_4_WB(Total_all_Summary, Urban_all_Summary, Rural_all_Summary)),
 
 tar_target(Sample_graph, sample_graph(Percent_Sample_dropped)),
 
 tar_target(Population_graph, total_population_graph(Pop_data)),
 
-tar_target(GDP_WB_growth_graph, GDP_growth_graph(GDP_WB))
+tar_target(GDP_WB_index_graph, GDP_index_graph(GDP_WB)),
+tar_target(GDP_WB_rate_of_change, GDP_rate_of_change(GDP_WB))
 )
-
