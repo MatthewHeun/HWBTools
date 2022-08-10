@@ -1,3 +1,20 @@
+#---------------------------------------------------------------------------Introduction------------------------------------------------------------------------------
+
+# # Name: Gia Mien Le
+# # Professor Matthew Heun
+# # Starting date: June 23, 2022
+# # File name: Test_env.R
+# 
+# # Description: This script is made as a testing environment before calling the variables in target. However, since variables called in
+# #              the target file is only exclusive to target, you need to use "tar_load(target_name)" to load that variable down into
+# #              your own PC.
+
+# #              Once again, please change the sourcing to the address where you placed the project.
+
+#---------------------------------------------------------------------------Testing Environment--------------------------------------------------------------------------------
+
+
+
 # # Source files from lab computer
 # source("C:/Users/gvl2.CALVINAD/OneDrive - Calvin University/SUMMER RESEARCH/Summer 2022/Analysis/Programming/VHLSS data analysis/Functions.R")
 # source("C:/Users/gvl2.CALVINAD/OneDrive - Calvin University/SUMMER RESEARCH/Summer 2022/Analysis/Programming/VHLSS data analysis/Column_label.R")
