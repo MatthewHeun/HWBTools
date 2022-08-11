@@ -6,20 +6,26 @@
 # # File name: Function.R
 # 
 # # Description: This file contains all the functions that analyzes VHLSS data from General Statistics Office of Vietnam (GSO). They are divided into
-# #              Starting, Filtering data, Analyzing Well-being data, Urban/Rural/Total, Results and graphing.
+# #              Starting, Filtering data, Analyzing Well-being data, Urban/Rural/Total, Results and graphing. 
+
+# #              Please note that the functions are written rather exclusively for analyzing VHLSS data. Therefore, the documentation describing the functions 
+# #              are rather exclusive as well, although some might be generally applicable. That's up to your own discretion on how to proceed with the code.
 
 #-----------------------------------------------------------------------------Starting--------------------------------------------------------------------------------
 
-#' Installing relevant packages
+#' Installing packages
 #' @aliases Install_pkg
 #' @param pkg_name, name of package to be installed 
 #'
 #' @description 
-#' This function takes in a string called in variable name pkg_name
+#' This function installs packages necessary for data analysis. It's not that smart since 
+#' you will be the one manually typing the packages names in the Start_page.R
 #' 
-#' @export
-#'
-#' @examples
+#' @details 
+#' This function takes in a string in the form of variable name pkg_name and checks whether
+#' or not the package is installed. If it is not, it will start the installation process. 
+#' If it is installed, it will print out "Package already installed" and stop the process.
+#' 
 NULL
 Install_pkg <- function(pkg_name) {
   if(pkg_name %in% rownames(installed.packages()) == FALSE) {
@@ -32,7 +38,25 @@ Install_pkg <- function(pkg_name) {
 }
 
 
-#Function: Importing .dta files into an R dataframe
+#' Getting .dta files
+#'
+#' @param path_name, address of the .dta files 
+#'
+#' @return a list of all the .dta file names
+#' 
+#' @description 
+#' This function takes  all the .dta file from the address provided in the variable 
+#' path_name, and puts them in a list.
+#' 
+#' @details 
+#' The function uses setwd(path_name) to set the main directory in the address where it is 
+#' supposed find .dta files. The files will be added to a list using the function
+#' list.files(path = ".", pattern = "*.dta"). Since the directory is already predetermined,
+#' there is no need to redefine path, hence ".". The pattern "*.dta" just means that we 
+#' are including all files in the folder with the .dta ending.
+#'
+#'
+NULL
 get_dta_files <- function(path_name) {
   setwd(path_name)
 
@@ -40,7 +64,27 @@ get_dta_files <- function(path_name) {
   
 }
 
-# Function: Importing .txt files into an R dataframe.
+
+#' Importing population data from .txt file
+#' 
+#' @param file_path, address of the .txt file
+#' 
+#' @return a data frame of Vietnam's total, urban, and rural population from 1979 - 2019
+#' 
+#' @description 
+#' A function that imports Vietnam's population data from a .txt file
+#' 
+#' @details 
+#' file_path is a variable that stores the address of the file. 
+#' 
+#' read_delim(file, sep), where "file" is the address of the file and "sep" is a 
+#' delimiter, is a function that reads in .txt files without worries about how you 
+#' spaced your files. 
+#' 
+#' The final results is a data frame as you have organized in your .txt file.
+#' 
+#' 
+NULL
 get_pop_data_txt <- function(file_path) {
 
   pop_data <- read.delim(file_path)
@@ -49,7 +93,30 @@ get_pop_data_txt <- function(file_path) {
 }
 
 
-# Function to get GDP data.
+
+#' Importing GDP data 
+#'
+#' @param Year , a custom vector of data years, in this case would be 2010 - 2018
+#'
+#' @return a data frame of wanted GDP based on countries, years, and types of GDP
+#' 
+#' @description 
+#' A function that takes in an existing data frame in R and filter it to get the final
+#' wanted results
+#' 
+#' @details 
+#' Obtained from package pwt10.0 is Penn World Table 10.0, a data frame of relative levels
+#' of income, output, input, and productivity of 183 countries between 1950 and 2019.
+#' Since there is data for almost every country in the world, I used the filter() function
+#' to narrow the "country" and "year" columns down to Vietnam and the years included
+#' in the parameter "Year".
+#' 
+#' There are many ways to calculate GDP, hence many GDP variables, but I decided with
+#' the variable name "cgdpe", which is the Expenditure-side real GDP at current PPPs
+#' (Purchasing Power Parity). Using the select() function, I picked out the columns 
+#' I wanted for the resulting data frame, "year" and "cgdpe".
+#'
+NULL
 get_GDP_data <- function(Year) {
   GDP_df <- filter(pwt10.0, country == "Viet Nam" & year %in% Year )
   GDP_df <- select(GDP_df, c("year", "cgdpe"))
@@ -58,7 +125,55 @@ get_GDP_data <- function(Year) {
 }
 #------------------------------------------------------------------------Filtering data------------------------------------------------------------------------------
 
-#foreign::read.dta() does not work for Stata version 5-12 --> use haven::read_dta() instead.
+#' Importing .dta files 
+#'
+#' @param file_list , a list of .dta file names generated by using function
+#' get_dta_files(path_name)
+#' 
+#' @param file_path , the .dta files address
+#'
+#' @return a list of imported .dta files in R
+#' 
+#' @description 
+#' A function that reads a list of .dta files into R as dataframes.
+#' 
+#' @details 
+#' There are some notes about the functions used in this function.
+#' 
+#' \describe{
+#' \item{lapply(X, FUN)}{
+#' 
+#' lapply(X, FUN) is used when you want to apply the exact same function to every variable 
+#' in the list. Yes, it is a shorter and more concise version of a for-loop. As you
+#' can see from the code below, "X" is the list you want to use, "FUN" is the function
+#' that you need to define. The "FUN" format seems like you are declaring a function
+#' with parameters, in this case, the parameter is one_dta_file, which is a .dta file name
+#' from the list. Since you want to apply the function to every variable in the list,
+#' you call one variable each time, until the function goes through every single element
+#' in your list. 
+#' }
+#' \item{read_dta} {
+#' 
+#' There are different versions of Stata (.dta). R reads all those .dta files using differnt
+#' functions from different packages depending on the versions of Stata. The version I
+#' am using in this function works for Stata versions 5 - 12.
+#' 
+#' \itemize{
+#' \item read.dta("data_name.dta") --> Package: foreign --> handles Stata versions 1-4
+#' \item read_dta("data_name.dta") --> Package: haven --> handles Stata versions 5-12
+#' \item read.dta13("data_name.dta") --> Package: readstata13 --> handles Stata version 13 and above
+#' } 
+#' 
+#' You can use the newer version function for the older, it should give you some wonkey
+#' results, but that should not be a problem. The other way around, however, will
+#' cause an error.
+#' 
+#' Additionally, .name_repair = "unique" just makes sure that there are no duplicate files.
+#' }
+#' 
+#' }
+#' 
+NULL
 import_dta_files <- function(file_list, file_path) {
     setwd(file_path)
     conv_file <- lapply(X = file_list, FUN = function(one_dta_file) {
@@ -67,7 +182,34 @@ import_dta_files <- function(file_list, file_path) {
 }
 
 
-#Naming data frames
+
+#' Naming data frames 
+#'
+#' @param data_list , a list of file names
+#' 
+#' @param conv_data_list , a list of converted .dta files into R data frames using
+#' the function import_dta_fules(file_path)
+#'
+#' @return a list of R data frames with names from the .dta file name list.
+#' 
+#' @description 
+#' A function that puts name on newly imported data frames. They are in form of lists.
+#' 
+#' @details 
+#' First, I need to make sure that the name list and the data frame list are of the same 
+#' length. Different lengths would be a bit of an issue since I am expecting that all 
+#' indices from one list to match all indices of the other.
+#' 
+#' The set_names(x, nm) function applies a vector (or list) of names to a vector (or list)
+#' of elements. Parameters "x" is a vector (or list) that needs names, and "nm" is a vector 
+#' (or list) of names. This function is from "magrittr" package.
+#' 
+#' You can write the command line this way: set_names(conv_data_list, data_list)
+#' The way it was written in the function conv_data_list %>% magrittr::set_names(data_list)
+#' has a pipeline characteristics that makes the code more readable.
+#'
+#' 
+NULL
 name_dataframes <- function(data_list, conv_data_list) {
   if (length(data_list) != length(conv_data_list)) {
     stop("Why are the lengths different in name_dataframes()?")
@@ -76,7 +218,45 @@ name_dataframes <- function(data_list, conv_data_list) {
     magrittr::set_names(data_list)
 }
 
-# Function to get all the sample households
+
+
+# Function to get all the household samples
+#' Create a data frame of all household samples
+#'
+#' @param hh_list , a list of VHLSS named data frame
+#'
+#' @return 
+#' new_df, a data frame that with the identifications of all households participating in the 
+#' survey.
+#'
+#' @description 
+#' This is a function that takes in a list of data frames of all VHLSS sections and
+#' output a data frame that contains unique and non-empty cells household identifications
+#' for all household samples in the survey.
+#' 
+#' @details 
+#' Since there are data frames that would have unnecessary household sample data, I 
+#' made an if-statement, stating that if any data frame from the input list belonged to 
+#' the vector of unnecessary household sample data, I assign that element to NULL.
+#' That would completely eliminate the data frame.(I was only doing this to reduce the 
+#' work load my PC was handling. The whole process for this function to run took an hour.
+#' If you have a better solution, please work on it.)
+#' 
+#' All remaining data frames are filtered down to maintaining only their household 
+#' identifications, which are tinh, huyen, xa, diaban, hoso. They can roughly be translated
+#' as province, district, commune, territory, house code. 
+#' 
+#' The bind_rows(df1, df2) function basically combine the rows of two data frames.
+#' Therefore, I first assigned "new_df" to the first filtered household data frame in the newly 
+#' sorted list. I just wanted to make sure that there are no errors when combining with an
+#' empty data frame. With "new_df" and using the for-loop, I repeated the process of adding rows
+#' of filtered data frames. 
+#' Using the function unique(), I made sure that none of the household IDs are duplicated.
+#' This gives me a final data frame of all the households that participated in the living
+#' standards survey.
+#' 
+#'
+NULL
 Total_sample_household <- function(hh_list) {
   for (name in names(hh_list)) {
     if (name %in% c("wt2014.dta", "oldHO1.dta", "wrongcalculationHO3.dta", "Ho_79.dta", "Ho_87.dta", 
@@ -94,7 +274,42 @@ Total_sample_household <- function(hh_list) {
 }
 
 
+
 # Function to add expenditure rows to get the most complete sample data.
+#' Create a data frame of all household samples in VHLSS survey section 3 data list.
+#'
+#' @param exp_list , a custom list of data frames names with expenditure data 
+#' @param folder_list , a list of all VHLSS data frames.
+#'
+#' @return a data frame of household IDs of all households participated in section 3
+#' of the survey.
+#' 
+#' @description 
+#' This function help sorts out households that participated in section 3 of the survey
+#' 
+#' @details 
+#' I let the function go through each element in the input list of data frames using 
+#' a for-loop. Since the name of each data frame comes in all forms and sizes, I used 
+#' tolower() function to de-capitalize them so that they match the format of list
+#' variables in List.R. The names() function basically calls the name of the variable in
+#' the list. If the names of data frames in the list exists within the list of section 3
+#' data frames names, I will add the rows of that data frame to the internally assigned 
+#' empty data frame new_df1, but only when the data frame is filter down to the columns
+#' that has household IDs, tinh, huyen, xa, diaban, hoso, using the select() function.
+#' 
+#' Unlike Total_sample_household() function where I assigned filled in the newly assigned 
+#' data frame, I just added new data frames into the empty one. I guess bind_rows() function
+#' can add rows of a data frame to an empty data frame. Please correct me if I'm wrong.
+#' 
+#' unique() function makes sure that none of the rows are duplicated, and the drop_na()
+#' function makes sure that no row has an empty cell. I assigned another new data frame 
+#' new_df2 to the unique and filled version of new_df1. 
+#' 
+#' The print functions helps print what you want to the console. In this case, please ignore
+#' the print function. I only added them since I want to get a sense of how many rows I have dropped
+#' and the percentage of rows that I dropped.
+#'
+NULL
 Add_exp_rows <- function(exp_list, folder_list) {
   new_df1 <- data.frame()
   
@@ -113,7 +328,29 @@ Add_exp_rows <- function(exp_list, folder_list) {
   return(new_df2)
 }
 
+
+
 #Adding lists function
+#' Adding variables from a list to a different list
+#'
+#' @param ex_list , a original list of variables to add to (the list already 
+#' have existing variables)
+#' @param add_list , a list of variables you would want to add to ex_list
+#' 
+#' @return ex_list, at this point, a new list of variables, both original and added
+#' 
+#' @description 
+#' This function adds variables to an existing list with variables from a different list
+#' of choice.
+#' 
+#' 
+#' @details
+#' I go through all the elements in add_list. If that element already exists in ex_list,
+#' I print to a screen of a rejection. If the element does not exist in ex_list, I use
+#' append() function to add the element to the ex_list.
+#' 
+#'
+NULL
 Add_list <- function(ex_list, add_list) {
   
   for (obj in add_list) {
@@ -128,7 +365,24 @@ Add_list <- function(ex_list, add_list) {
   return(ex_list)
 }
 
+
 # This functions deals with if it is a list of lists
+#' Add_list() but for lists contained in a list
+#'
+#' @param ex_list , a original list of variables to add to (the list already 
+#' have existing variables)
+#' @param Big_list a list of lists of variables you want to add to ex_list
+#'
+#' @return a new list of variables, both original and added.
+#'
+#' @description
+#' A function similar to and uses Add_list(), but used on a list of lists.
+#' 
+#' @details 
+#' I simply apply Add_list() function to every list in the Big_list. The outcome would
+#' be a new list of both the original variables and newly added variables.
+#'
+NULL
 make_list <- function(ex_list, Big_list) {
   for (obj in Big_list) {
       ex_list <- Add_list(ex_list, obj)
@@ -136,7 +390,135 @@ make_list <- function(ex_list, Big_list) {
   return(ex_list)
 }
 
+
+
+
+# Combining all possible population data in the given list
+#' Extract household samples involved in the expenditure survey
+#'
+#' @param WB_list , a list of data frames (in this case, with expenditure data
+#' and human well-being related data from the survey)
+#'
+#' @return a data frame of households that participated in the expenditure survey and
+#' human well-being related survey.
+#' 
+#' @description 
+#' A function that takes in a list of expenditure data frames and human well-being data and 
+#' filter them to have the households that participate in the expenditure survey.
+#' 
+#' @details 
+#' \describe{
+#' \item {Creating a of dataframes with only household identity} {
+#' 
+#' I created an empty list variable called new_list, a cnt variable to keep count
+#' of the iteration, and an empty data frame called pop_data.
+#' 
+#' With the for-loop, I go through every single data frame in WB_list, filter them down
+#' to the first five columns (those columns are household identifications), and add them to the
+#' the new_list with cnt as the iterative index number. To call a variable from a list 
+#' (in this case), you need to use the format "list_name[[index_number]]".
+#' 
+#' I should have documented the code right after I had written. But I did not, and now
+#' I have no idea why I put an if-statement to see whether the new_list is empty before
+#' adding a data frame into it. That part is unnecessary and redundant.
+#' }
+#' 
+#' \item {Filtering out households with the most complete data} {
+#' 
+#' The inner_join() function merges two data frames and only return rows that matches 
+#' from both data frames.
+#' So, I have the first data frame in new_list duplicate-free and all identifications filled
+#' and assigned to pop_data (the empty data frame created in the beginning).
+#' 
+#' I created a for-loop with the iteration number starting at 2 since I already have
+#' the first data frame assigned to pop_data. As the loop processes, pop_data will merge 
+#' with the next data frame in the list. That new data frame will be re-assigned to 
+#' pop_data. And so on. 
+#' 
+#' Unique() is used to get rid of duplicated rows. Drop_na() is used to eliminate 
+#' incomplete household identification rows. 
+#' }
+#' }
+#' 
+#' Once again, please ignore the print() statements. They are for monitoring the number
+#' of rows (or samples) dropped during the process.
+#' 
+#' Other BIG NOTE: Sample_ext() is a function that complements Sample_data
+#'
+NULL
+Sample_ext <- function(WB_list) {
+  new_list <- list()
+  cnt = 1
+  pop_data <- data.frame()
+  
+  for (obj in 1:length(WB_list)) {
+    if (length(new_list) == 0) {
+      new_list[[cnt]] <- data.frame(select(WB_list[[obj]], c(1:5)))
+      cnt = cnt + 1
+    } else {
+      new_list[[cnt]] <- data.frame(select(WB_list[[obj]], c(1:5)))
+      cnt = cnt + 1
+    }
+    
+  }
+  
+  print(c("Before:", nrow(new_list[[1]])))
+  pop_data <- drop_na(unique(new_list[[1]]))
+  print(c("After:", nrow(pop_data)))
+  
+  print(length(new_list))
+  
+  for (x in 2:length(new_list)) {
+    print(c("Before:", nrow(pop_data)))
+    pop_data <- unique(drop_na(data.frame(inner_join(pop_data, new_list[[x]]))))
+    print(c("After:", nrow(pop_data)))
+  }
+  
+  print(length(new_list))
+  print(length(WB_list))
+  
+  print(c("Finally,", nrow(pop_data)))
+  return(pop_data)
+  
+}
+
+
+
 # Initial Filtering population data
+#' Creating a data frame of complete household samples
+#'
+#' @param data_list , list of VHLSS data frames
+#' @param name_list , list of data frame names related to expenditure and human well-being
+#' @param exp_df1 , education expenditure data frame
+#' @param exp_df2 , survey section 3 data frame
+#'
+#' @return a data frame of complete household samples
+#' 
+#' @description
+#' This function takes in a list of VHLSS data frames, list of data frame names relevant to
+#' the research, education expenditure data frame, and survey section 3 data frame and combine
+#' them into a data frame of complete household samples.
+#' 
+#' @details 
+#' I create an empty list and called it init_list1. This will be the list where I will store
+#' all data frames relevant to the human well-being research. 
+#' 
+#' The for-loop will iterate through each data frame in the data_list, which is a list
+#' of all imported VHLSS data frames. For each iteration, each will compare whether the name
+#' of that data frame matches with the data name in the name_list since name_list is a list
+#' of names of data frames relevant to the human well-being research.
+#' If the name does not match, the iteration will print a statement "Skip object!" and move on.
+#' If the name matches, the function will add that data frame (not data frame name) into 
+#' init_list1.
+#' 
+#' The results from Sample_ext() is assigned to sample_df data frame. 
+#' new_sample_df data frame merges with exp_df1 and exp_df2, which are education expenditure data frame
+#' and survey section 3 data frame, using inner_join() and outputting a data frame with rows that
+#' matches.
+#' 
+#' The final result is a data frame of the most complete household sample data (for now).
+#'
+#' @examples
 Sample_data <- function(data_list, name_list, exp_df1, exp_df2) {
   
   init_list1 <- list()
@@ -166,42 +548,6 @@ Sample_data <- function(data_list, name_list, exp_df1, exp_df2) {
 }
 
 
-# Combining all possible population data in the given list
-Sample_ext <- function(WB_list) {
-  new_list <- list()
-  cnt = 1
-  pop_data <- data.frame()
-  
-  for (obj in 1:length(WB_list)) {
-    if (length(new_list) == 0) {
-      new_list[[cnt]] <- data.frame(select(WB_list[[obj]], c(1:5)))
-      cnt = cnt + 1
-    } else {
-      new_list[[cnt]] <- data.frame(select(WB_list[[obj]], c(1:5)))
-      cnt = cnt + 1
-    }
-    
-  }
-  
-  print(c("Before:", nrow(new_list[[1]])))
-  pop_data <- drop_na(unique(new_list[[1]]))
-  print(c("After:", nrow(pop_data)))
-  
-  print(length(new_list))
-
-  for (x in 2:length(new_list)) {
-    print(c("Before:", nrow(pop_data)))
-    pop_data <- unique(drop_na(data.frame(inner_join(pop_data, new_list[[x]]))))
-    print(c("After:", nrow(pop_data)))
-  }
-
-  print(length(new_list))
-  print(length(WB_list))
-  
-  print(c("Finally,", nrow(pop_data)))
-  return(pop_data)
-  
-}
 
 
 # Column extraction for 2012 household data
