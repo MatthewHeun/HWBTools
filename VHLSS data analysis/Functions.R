@@ -1420,3 +1420,36 @@ GDP_rate_of_change <- function(GDP_WB) {
     ggtitle("GDP growth rate vs. Human well-being growth rate in Vietnam")
   
 }
+
+#----------------------------------------------------------------------OUTPUT DATA CODE SECTION-------------------------------------------------------------
+
+Num_obs <- function(excel_file, excel_sheet, data_set) {
+  Obs_criteria <- read_excel(excel_file, sheet = excel_sheet)
+
+  for (x in 1:nrow(Obs_criteria)) {
+    if (Obs_criteria$'Data file'[x] == 'n/a' || Obs_criteria$'Data column'[x] == 'n/a') {
+      Obs_criteria$'Number of observations'[x] <- 'n/a'
+      Obs_criteria$'Total observations'[x] <- 'n/a'
+    }else{
+      data_file <- data_set[[Obs_criteria$'Data file'[x]]]
+      data_column <- data_file[Obs_criteria$'Data column'[x]]
+      if (Obs_criteria$'Code'[x] == "No") {
+        Obs_criteria$'Number of observations'[x] <- nrow(drop_na(data_column))
+        Obs_criteria$'Total observations'[x] <- nrow(data_column)
+      }else{
+        code_df <- as.data.frame(pivot_wider(data_file, names_from= colnames(data_file[6]) , values_from = colnames(data_column)))
+        Obs_criteria$'Number of observations'[x] <- nrow(code_df[Obs_criteria$'Code'[x]])
+        Obs_criteria$'Total observations'[x] <- nrow(code_df[Obs_criteria$'Code'[x]])
+      }
+
+    }
+
+  }
+  
+  return(code_df)
+  #wb <- loadWorkbook(excel_file)
+  #writeData(wb, excel_sheet, Obs_criteria)
+  #saveWorkbook(wb, excel_file, overwrite = TRUE)
+  
+  
+}

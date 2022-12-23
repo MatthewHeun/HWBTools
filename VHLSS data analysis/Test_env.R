@@ -26,6 +26,8 @@ source("C:/Users/giami/OneDrive - Calvin University/SUMMER RESEARCH/Summer 2022/
 source("C:/Users/giami/OneDrive - Calvin University/SUMMER RESEARCH/Summer 2022/Analysis/Programming/HWBTools/VHLSS data analysis/List.R")
 
 hh_path = "C:/Users/giami/OneDrive - Calvin University/SUMMER RESEARCH/Summer 2022/Analysis/VHLSS Raw data/10 - VHLSS 2018/2 - Data/1 - Households/HO1.dta"
+excel_path = "C:/Users/giami/OneDrive - Calvin University/SUMMER RESEARCH/Summer 2022/Analysis/Questionnaire analysis.xlsx"
+excel_sheet = "observations-energy"
 
 # df1 <- data.frame(ID = c("One", "Two", "Three", "Four", "Five", "Six"),
 #                  ID2 = c("H", "He", "Hel", "Hell", "Hello", "Hello!"),
@@ -312,4 +314,6 @@ hh_path = "C:/Users/giami/OneDrive - Calvin University/SUMMER RESEARCH/Summer 20
 #     }
 #   }
 # }
+
+excel_output <- Num_obs(excel_path, excel_sheet, Named_HH_2014)
 
