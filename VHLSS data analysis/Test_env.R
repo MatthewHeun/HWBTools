@@ -89,9 +89,7 @@ excel_sheet = "observations-energy"
 # 
 # WB_Fuel_data <- filter(fuel, Percent >= 0.5)
 
-# df1 <- data.frame(ID = c(1,1,2,2,2,3,3),
-#                   Relationship = c("Head", "Spouse", "Head", "Spouse", "Spouse", "Head", "Spouse"),
-#                   Grade = c(4,3,5,7,8,2,12))
+
 
 # dataframe <- haven::read_dta(hh_path)
 # 
@@ -315,5 +313,10 @@ excel_sheet = "observations-energy"
 #   }
 # }
 
-excel_output <- Num_obs(excel_path, excel_sheet, Named_HH_2014)
+# excel_output <- Num_obs(excel_path, excel_sheet, Named_HH_2014)
 
+df1 <- data.frame(ID = c(1,1,2,2,2,3,3),
+                  Relationship = c("Head", "Spouse", "Head", "Spouse", "Spouse", "Head", "Spouse"),
+                  Grade = c(4,3,5,7,8,2,12))
+
+df2 <- filter(df1, df1[, c(1)] == 1)

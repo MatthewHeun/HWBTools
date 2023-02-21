@@ -4,14 +4,14 @@
 
 
 # #Source file lab computer
- # source("C:/Users/gvl2/OneDrive - Calvin University/SUMMER RESEARCH/Summer 2022/Analysis/Programming/VHLSS data analysis/Functions.R")
- # source("C:/Users/gvl2/OneDrive - Calvin University/SUMMER RESEARCH/Summer 2022/Analysis/Programming/VHLSS data analysis/Column_label.R")
- # source("C:/Users/gvl2/OneDrive - Calvin University/SUMMER RESEARCH/Summer 2022/Analysis/Programming/VHLSS data analysis/List.R")
+ source("C:/Users/gvl2/OneDrive - Calvin University/SUMMER RESEARCH/Summer 2022/Analysis/Programming/HWBTools/VHLSS data analysis/Functions.R")
+ source("C:/Users/gvl2/OneDrive - Calvin University/SUMMER RESEARCH/Summer 2022/Analysis/Programming/HWBTools/VHLSS data analysis/Column_label.R")
+ source("C:/Users/gvl2/OneDrive - Calvin University/SUMMER RESEARCH/Summer 2022/Analysis/Programming/HWBTools/VHLSS data analysis/List.R")
 
 # Source file personal computer
-source("C:/Users/giami/OneDrive - Calvin University/SUMMER RESEARCH/Summer 2022/Analysis/Programming/HWBTools/VHLSS data analysis/Functions.R")
-source("C:/Users/giami/OneDrive - Calvin University/SUMMER RESEARCH/Summer 2022/Analysis/Programming/HWBTools/VHLSS data analysis/Column_label.R")
-source("C:/Users/giami/OneDrive - Calvin University/SUMMER RESEARCH/Summer 2022/Analysis/Programming/HWBTools/VHLSS data analysis/List.R")
+# source("C:/Users/giami/OneDrive - Calvin University/SUMMER RESEARCH/Summer 2022/Analysis/Programming/HWBTools/VHLSS data analysis/Functions.R")
+# source("C:/Users/giami/OneDrive - Calvin University/SUMMER RESEARCH/Summer 2022/Analysis/Programming/HWBTools/VHLSS data analysis/Column_label.R")
+# source("C:/Users/giami/OneDrive - Calvin University/SUMMER RESEARCH/Summer 2022/Analysis/Programming/HWBTools/VHLSS data analysis/List.R")
 
 #Target package installation
 install.packages("targets")
@@ -37,10 +37,6 @@ hh_2016_path = "C:/Users/giami/OneDrive - Calvin University/SUMMER RESEARCH/Summ
 hh_2018_path = "C:/Users/giami/OneDrive - Calvin University/SUMMER RESEARCH/Summer 2022/Analysis/VHLSS Raw data/10 - VHLSS 2018/2 - Data/1 - Households"
 pop_path = "C:/Users/giami/OneDrive - Calvin University/SUMMER RESEARCH/Summer 2022/Analysis/Programming/VHLSS data analysis/Population data.txt"
 urban_rural_path_2012 = "C:/Users/giami/OneDrive - Calvin University/SUMMER RESEARCH/Summer 2022/Analysis/VHLSS Raw data/7 - VHLSS 2012/2 - Data_household/ho11.dta"
-
-# .xlsx file path to excel observation sheet
-excel_path = "C:/Users/giami/OneDrive - Calvin University/SUMMER RESEARCH/Summer 2022/Analysis/Questionnaire analysis.xlsx"
-excel_sheet = "observations-energy"
 
 #List of target objects
 list(
