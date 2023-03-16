@@ -35,12 +35,13 @@
 # source("C:/Users/gvl2/OneDrive - Calvin University/SUMMER RESEARCH/Summer 2022/Analysis/Programming/HWBTools/VHLSS data analysis/Functions.R")
 
 # Source file from personal computer
-source("C:/Users/giami/OneDrive - Calvin University/SUMMER RESEARCH/Summer 2022/Analysis/Programming/HWBTools/VHLSS data analysis/Functions.R")
+# source("C:/Users/giami/OneDrive - Calvin University/SUMMER RESEARCH/Summer 2022/Analysis/Programming/HWBTools/VHLSS data analysis/Functions.R")
 
-
+# Source file from Lina's personal computer
+source("C:/Users/brand/Documents/GitHub/HWBTools/VHLSS data analysis")
 
 # dataframe_path = "C:/Users/gvl2/OneDrive - Calvin University/SUMMER RESEARCH/Summer 2022/Analysis/Programming/HWBTools/VHLSS data analysis"
-dataframe_path = "C:/Users/giami/OneDrive - Calvin University/SUMMER RESEARCH/Summer 2022/Analysis/Programming/HWBTools/VHLSS data analysis/"
+dataframe_path = "C:/Users/brand/Documents/GitHub/HWBTools/VHLSS data analysis"
 dataframe_file = "DataFrames.RData"
 
 setwd(dataframe_path)
